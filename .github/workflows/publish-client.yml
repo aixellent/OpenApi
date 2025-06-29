@@ -1,0 +1,41 @@
+name: Publish Client NuGet Package
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build API
+        run: dotnet build ProjectManagerSimulatorApi/ProjectManagerSimulatorApi.csproj --configuration Release -o ./ApiOutput
+
+      - uses: actions/setup-node@v4
+        name: install node
+
+      - name: install NSwag
+        run: npm install -g nswag
+
+      - name: Generate Client
+        run: nswag openapi2csclient /input:./ApiOutput/ProjectManagerSimulatorApi.json /output:./Client/Client.cs /namespace:ProjectManagerSimulatorClient  /classname:ProjectManagerSimulatorClient /generateOptionalParameters:true
+      
+      - name: Pack
+        run: dotnet pack Client/Client.csproj --configuration Release --output ./nupkg --version-suffix "alpha"
+
+      - name: Publish to GitHub Packages
+        run: dotnet nuget push ./nupkg/*.nupkg --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ secrets.GITHUB_TOKEN }}
