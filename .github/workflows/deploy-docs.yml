@@ -1,0 +1,37 @@
+name: deploy-docs.yml
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build API
+        run: dotnet build ProjectManagerSimulatorApi/ProjectManagerSimulatorApi.csproj --configuration Release -o ./ApiOutput
+
+      - uses: actions/setup-node@v4
+        name: install node
+
+      - name: copy openapi.json
+        run: cp ./ApiOutput/ProjectManagerSimulatorApi.json ./docs/sim-docs/ProjectManagerSimulatorApi.json
