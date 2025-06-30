@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>ProjectManagerSimulatorClient</PackageId>
-    <VersionPrefix>1.0.2</VersionPrefix>
+    <VersionPrefix>1.0.3</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
