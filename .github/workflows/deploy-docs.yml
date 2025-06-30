@@ -37,3 +37,10 @@ jobs:
         run: |
           mkdir -p ./docs/sim-docs
           cp ./ApiOutput/ProjectManagerSimulatorApi.json ./docs/sim-docs/ProjectManagerSimulatorApi.json
+
+      # MAKE THE FILE ACCESSIBLE
+      - name: Upload API Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: ProjectManagerSimulatorApi
+          path: ./ApiOutput/ProjectManagerSimulatorApi.json
