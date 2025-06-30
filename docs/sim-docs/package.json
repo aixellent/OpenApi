@@ -1,0 +1,11 @@
+{
+  "name": "sim-docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0"
+  }
+}
