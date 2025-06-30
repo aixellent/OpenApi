@@ -34,4 +34,6 @@ jobs:
         name: install node
 
       - name: copy openapi.json
-        run: cp ./ApiOutput/ProjectManagerSimulatorApi.json ./docs/sim-docs/ProjectManagerSimulatorApi.json
+        run: |
+          mkdir -p ./docs/sim-docs
+          cp ./ApiOutput/ProjectManagerSimulatorApi.json ./docs/sim-docs/ProjectManagerSimulatorApi.json
